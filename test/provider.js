@@ -5,20 +5,20 @@
 var angular = require('angular')
 require('angular-mocks/ngMock')
 var expect = require('chai').expect
-var angularStripe = require('../')
+var angularConekta = require('../')
 
 describe('Provider', function () {
-  it('exposes Stripe#setPublishableKey', function (done) {
-    angular.mock.module(angularStripe, function (stripeProvider) {
-      expect(typeof stripeProvider.setPublishableKey).to.equal('function')
+  it('exposes Conekta#setPublicKey', function (done) {
+    angular.mock.module(angularConekta, function (conektaProvider) {
+      expect(typeof conektaProvider.setPublicKey).to.equal('function')
       done()
     })
     angular.mock.inject()
   })
 
   it('exposes url', function (done) {
-    angular.mock.module(angularStripe, function (stripeProvider) {
-      expect(typeof stripeProvider.url).to.equal('string')
+    angular.mock.module(angularConekta, function (conektaProvider) {
+      expect(typeof conektaProvider.url).to.equal('string')
       done()
     })
     angular.mock.inject()

@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.angularStripe = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.angularConekta = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 (function (global){
 'use strict'
 
@@ -101,7 +101,7 @@ function Nodeback (apply, resolve, reject) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"assert-function":10,"to-array":31}],4:[function(_dereq_,module,exports){
+},{"assert-function":9,"to-array":31}],4:[function(_dereq_,module,exports){
 /*!
  * array-last <https://github.com/jonschlinkert/array-last>
  *
@@ -128,21 +128,7 @@ module.exports = function last(arr, num) {
   return res;
 };
 
-},{"array-slice":6,"is-number":5}],5:[function(_dereq_,module,exports){
-/*!
- * is-number <https://github.com/jonschlinkert/is-number>
- *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
- * Licensed under the MIT License
- */
-
-'use strict';
-
-module.exports = function isNumber(n) {
-  return !!(+n) || n === 0 || n === '0';
-};
-
-},{}],6:[function(_dereq_,module,exports){
+},{"array-slice":5,"is-number":18}],5:[function(_dereq_,module,exports){
 /*!
  * array-slice <https://github.com/jonschlinkert/array-slice>
  *
@@ -179,7 +165,7 @@ function idx(arr, pos, end) {
 
   return pos;
 }
-},{}],7:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 
 // rawAsap provides everything we need except exception management.
@@ -247,7 +233,7 @@ RawTask.prototype.call = function () {
     }
 };
 
-},{"./raw":8}],8:[function(_dereq_,module,exports){
+},{"./raw":7}],7:[function(_dereq_,module,exports){
 (function (global){
 "use strict";
 
@@ -327,9 +313,12 @@ function flush() {
 
 // Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
 // have WebKitMutationObserver but not un-prefixed MutationObserver.
-// Must use `global` instead of `window` to work in both frames and web
+// Must use `global` or `self` instead of `window` to work in both frames and web
 // workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
-var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+
+/* globals self */
+var scope = typeof global !== "undefined" ? global : self;
+var BrowserMutationObserver = scope.MutationObserver || scope.WebKitMutationObserver;
 
 // MutationObservers are desirable because they have high priority and work
 // reliably everywhere they are implemented.
@@ -471,7 +460,7 @@ rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 // https://github.com/tildeio/rsvp.js/blob/cddf7232546a9cf858524b75cde6f9edf72620a7/lib/rsvp/asap.js
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 'use strict'
 
 var assert = _dereq_('assert-ok')
@@ -482,7 +471,7 @@ module.exports = function assertEqual (a, b) {
   assert(a === b, format('expected `%s` to equal `%s`', print(a), print(b)))
 }
 
-},{"assert-ok":11,"print-value":27,"simple-format":29}],10:[function(_dereq_,module,exports){
+},{"assert-ok":10,"print-value":28,"simple-format":30}],9:[function(_dereq_,module,exports){
 'use strict'
 
 module.exports = function assertFunction (value) {
@@ -491,7 +480,7 @@ module.exports = function assertFunction (value) {
   }
 }
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 'use strict'
 
 module.exports = function assertOk (value, message) {
@@ -500,24 +489,77 @@ module.exports = function assertOk (value, message) {
   }
 }
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 'use strict'
-
-var toArray = _dereq_('to-array')
 
 module.exports = CallAll
 
 function CallAll (fns) {
-  fns = Array.isArray(fns) ? fns : toArray(arguments)
+  fns = Array.isArray(fns) ? fns : arguments
   return function callAll () {
     var args = arguments
-    return fns.map(function (fn) {
-      return fn.apply(null, args)
-    })
+    var ret = new Array(fns.length)
+    for (var i = 0, ii = fns.length; i < ii; i++) {
+      ret[i] = fns[i].apply(null, args)
+    }
+    return ret
   }
 }
 
-},{"to-array":31}],13:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
+'use strict'
+
+var assign = _dereq_('xtend/mutable')
+var dot = _dereq_('dot-prop')
+
+var methods = conektaErrback.methods = {
+  async: [
+    'token.create'
+  ],
+  sync: [
+    'setPublicKey',
+    'card.validateNumber',
+    'card.validateExpirationDate',
+    'card.validateCVC',
+    'card.getBrand'
+  ]
+}
+
+module.exports = conektaErrback
+
+function conektaErrback (Conekta) {
+  if (typeof Conekta !== 'object') throw new Error('Conekta.js must be provided')
+
+  var conekta = {}
+
+  methods.async.forEach(function (method) {
+    var names = method.split('.')
+    var receiverName = names[0]
+    var methodName = names[1]
+    dot.set(conekta, method, toErrback(methodName, Conekta[receiverName]))
+  })
+
+  methods.sync.forEach(function (method) {
+    dot.set(conekta, method, dot.get(Conekta, method))
+  })
+
+  return conekta
+}
+
+function toErrback (method, receiver) {
+  return function errback () {
+    var args = Array.prototype.slice.call(arguments)
+    var callback = args.pop()
+
+    receiver[method].apply(receiver, args.concat(function onConekta (response) {
+      callback(null, response)
+    }, function errorConekta (error) {
+      callback(assign(new Error(), error))
+    }))
+  }
+}
+
+},{"dot-prop":15,"xtend/mutable":34}],13:[function(_dereq_,module,exports){
 /**
  * cuid.js
  * Collision-resistant UID generator for browsers and node.
@@ -653,7 +695,7 @@ function dezalgo (cb) {
   }
 }
 
-},{"asap":7,"wrappy":32}],15:[function(_dereq_,module,exports){
+},{"asap":6,"wrappy":32}],15:[function(_dereq_,module,exports){
 'use strict';
 var isObj = _dereq_('is-obj');
 
@@ -766,7 +808,7 @@ function getPathSegments(path) {
 	return parts;
 }
 
-},{"is-obj":18}],16:[function(_dereq_,module,exports){
+},{"is-obj":19}],16:[function(_dereq_,module,exports){
 'use strict'
 
 var assertFn = _dereq_('assert-function')
@@ -804,7 +846,7 @@ function Ear () {
   return listeners
 }
 
-},{"assert-function":10}],17:[function(_dereq_,module,exports){
+},{"assert-function":9}],17:[function(_dereq_,module,exports){
 (function (global){
 var win;
 
@@ -822,18 +864,32 @@ module.exports = win;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],18:[function(_dereq_,module,exports){
+/*!
+ * is-number <https://github.com/jonschlinkert/is-number>
+ *
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Licensed under the MIT License
+ */
+
+'use strict';
+
+module.exports = function isNumber(n) {
+  return !!(+n) || n === 0 || n === '0';
+};
+
+},{}],19:[function(_dereq_,module,exports){
 'use strict';
 module.exports = function (x) {
 	var type = typeof x;
 	return x !== null && (type === 'object' || type === 'function');
 };
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 /*!
  * isobject <https://github.com/jonschlinkert/isobject>
  *
@@ -849,7 +905,7 @@ module.exports = function isObject(o) {
   return o != null && typeof o === 'object' && !isArray(o);
 };
 
-},{"isarray":19}],21:[function(_dereq_,module,exports){
+},{"isarray":20}],22:[function(_dereq_,module,exports){
 exports = module.exports = stringify
 exports.getSerialize = serializer
 
@@ -878,7 +934,7 @@ function serializer(replacer, cycleReplacer) {
   }
 }
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 'use strict'
 
 var assert = _dereq_('assert-ok')
@@ -932,7 +988,7 @@ function Lazy (methods, load) {
   }
 }
 
-},{"array-last":4,"assert-equal":9,"assert-ok":11,"call-all-fns":12,"dezalgo":14,"dot-prop":23,"to-array":31}],23:[function(_dereq_,module,exports){
+},{"array-last":4,"assert-equal":8,"assert-ok":10,"call-all-fns":11,"dezalgo":14,"dot-prop":24,"to-array":31}],24:[function(_dereq_,module,exports){
 'use strict';
 var isObj = _dereq_('is-obj');
 
@@ -1031,7 +1087,7 @@ function getPathSegments(path) {
 	return parts;
 }
 
-},{"is-obj":18}],24:[function(_dereq_,module,exports){
+},{"is-obj":19}],25:[function(_dereq_,module,exports){
 'use strict'
 
 var load = _dereq_('load-script')
@@ -1113,7 +1169,7 @@ function jsonpCallback (options, callback) {
   return id
 }
 
-},{"assert-ok":11,"cuid":13,"dezalgo":14,"ear":16,"global/window":17,"load-script":25,"query-extend":28,"xtend":33}],25:[function(_dereq_,module,exports){
+},{"assert-ok":10,"cuid":13,"dezalgo":14,"ear":16,"global/window":17,"load-script":26,"query-extend":29,"xtend":33}],26:[function(_dereq_,module,exports){
 
 module.exports = function load (src, opts, cb) {
   var head = document.head || document.getElementsByTagName('head')[0]
@@ -1180,7 +1236,7 @@ function ieOnEnd (script, cb) {
   }
 }
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 'use strict';
 
 module.exports = function split(str) {
@@ -1209,7 +1265,7 @@ module.exports = function split(str) {
     return res;
 };
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 'use strict'
 
 var isObject = _dereq_('isobject')
@@ -1228,7 +1284,7 @@ function stringify (value) {
   return safeStringify(value, null, '')
 }
 
-},{"isobject":20,"json-stringify-safe":21}],28:[function(_dereq_,module,exports){
+},{"isobject":21,"json-stringify-safe":22}],29:[function(_dereq_,module,exports){
 !function(glob) {
 
   var queryToObject = function(query) {
@@ -1371,7 +1427,7 @@ function stringify (value) {
   }
 
 }(this);
-},{}],29:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 'use strict'
 
 var printf = _dereq_('pff')
@@ -1383,67 +1439,7 @@ module.exports = function format (message) {
   return toArray(arguments).join(' ')
 }
 
-},{"pff":26,"to-array":31}],30:[function(_dereq_,module,exports){
-'use strict'
-
-var assign = _dereq_('xtend/mutable')
-var dot = _dereq_('dot-prop')
-
-var methods = stripeErrback.methods = {
-  async: [
-    'card.createToken',
-    'bankAccount.createToken',
-    'piiData.createToken',
-    'bitcoinReceiver.createReceiver',
-    'bitcoinReceiver.pollReceiver',
-    'bitcoinReceiver.getReceiver'
-  ],
-  sync: [
-    'setPublishableKey',
-    'card.validateCardNumber',
-    'card.validateExpiry',
-    'card.validateCVC',
-    'card.cardType',
-    'bankAccount.validateRoutingNumber',
-    'bankAccount.validateAccountNumber',
-    'bitcoinReceiver.cancelReceiverPoll'
-  ]
-}
-
-module.exports = stripeErrback
-
-function stripeErrback (Stripe) {
-  if (typeof Stripe !== 'function') throw new Error('Stripe.js must be provided')
-
-  var stripe = {}
-
-  methods.async.forEach(function (method) {
-    var names = method.split('.')
-    var receiverName = names[0]
-    var methodName = names[1]
-    dot.set(stripe, method, toErrback(methodName, Stripe[receiverName]))
-  })
-
-  methods.sync.forEach(function (method) {
-    dot.set(stripe, method, dot.get(Stripe, method))
-  })
-
-  return stripe
-}
-
-function toErrback (method, receiver) {
-  return function errback () {
-    var args = Array.prototype.slice.call(arguments)
-    var callback = args.pop()
-
-    receiver[method].apply(receiver, args.concat(function onStripe (status, response) {
-      if (response.error) return callback(assign(new Error(), response.error, {status: status}))
-      callback(null, response)
-    }))
-  }
-}
-
-},{"dot-prop":15,"xtend/mutable":34}],31:[function(_dereq_,module,exports){
+},{"pff":27,"to-array":31}],31:[function(_dereq_,module,exports){
 module.exports = toArray
 
 function toArray(list, index) {
@@ -1539,12 +1535,12 @@ function extend(target) {
 var Lazy = _dereq_('lazy-async')
 var dot = _dereq_('dot-prop')
 var loadScript = _dereq_('load-script-global')
-var stripeErrback = _dereq_('stripe-errback')
+var conektaErrback = _dereq_('conekta-errback')
 
-module.exports = LazyStripe
+module.exports = LazyConekta
 
-function LazyStripe (url, promisify) {
-  var methods = stripeErrback.methods.async.concat(stripeErrback.methods.sync)
+function LazyConekta (url, promisify) {
+  var methods = conektaErrback.methods.async.concat(conektaErrback.methods.sync)
   var lazy = Lazy(methods, load)
 
   return methods.reduce(function (acc, method) {
@@ -1554,16 +1550,20 @@ function LazyStripe (url, promisify) {
   }, {})
 
   function load (callback) {
-    loadScript({
-      url: url,
-      global: 'Stripe'
-    }, onLoad)
+    if (window.Conekta) {
+      onLoad(null, window.Conekta)
+    } else {
+      loadScript({
+        url: url,
+        global: 'Conekta'
+      }, onLoad)
+    }
 
-    function onLoad (err, Stripe) {
+    function onLoad (err, Conekta) {
       if (err) return callback(err)
-      var stripe = stripeErrback(Stripe)
-      stripe.setPublishableKey = Success(stripe.setPublishableKey, stripe)
-      callback(null, stripe)
+      var conekta = conektaErrback(Conekta)
+      conekta.setPublicKey = Success(conekta.setPublicKey, conekta)
+      callback(null, conekta)
     }
   }
 }
@@ -1576,19 +1576,19 @@ function Success (fn, context) {
   }
 }
 
-},{"dot-prop":15,"lazy-async":22,"load-script-global":24,"stripe-errback":30}],36:[function(_dereq_,module,exports){
+},{"conekta-errback":12,"dot-prop":15,"lazy-async":23,"load-script-global":25}],36:[function(_dereq_,module,exports){
 'use strict'
 
-var LazyStripe = _dereq_('./lazy')
+var LazyConekta = _dereq_('./lazy')
 
-module.exports = stripeProvider
+module.exports = conektaProvider
 
-function stripeProvider () {
+function conektaProvider () {
   var key = null
-  var stripe = null
+  var conekta = null
 
-  this.url = 'https://js.stripe.com/v2/'
-  this.setPublishableKey = function setPublishableKey (_key) {
+  this.url = 'https://cdn.conekta.io/js/latest/conekta.min.js'
+  this.setPublicKey = function setPublicKey (_key) {
     key = _key
   }
 
@@ -1596,10 +1596,10 @@ function stripeProvider () {
   this.$get.$inject = ['promisify', '$exceptionHandler']
 
   function service (promisify, $exceptionHandler) {
-    if (stripe) return stripe
-    stripe = LazyStripe(this.url, promisify)
-    stripe.setPublishableKey(key)
-    return stripe
+    if (conekta) return conekta
+    conekta = LazyConekta(this.url, promisify)
+    conekta.setPublicKey(key)
+    return conekta
   }
 }
 
@@ -1610,17 +1610,17 @@ function stripeProvider () {
 var angular = (typeof window !== "undefined" ? window['angular'] : typeof global !== "undefined" ? global['angular'] : null)
 var provider = _dereq_('./provider')
 
-module.exports = angular.module('angular-stripe', [
+module.exports = angular.module('angularjs-conekta', [
   _dereq_('angular-q-promisify'),
   _dereq_('angular-assert-q-constructor')
 ])
-.provider('stripe', provider)
+.provider('conekta', provider)
 .run(verifyQ)
 .name
 
 verifyQ.$inject = ['assertQConstructor']
 function verifyQ (assertQConstructor) {
-  assertQConstructor('angular-stripe: For Angular <= 1.2 support, first load https://github.com/bendrucker/angular-q-constructor')
+  assertQConstructor('angularjs-conekta: For Angular <= 1.2 support, first load https://github.com/bendrucker/angular-q-constructor')
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

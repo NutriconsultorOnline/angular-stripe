@@ -1,109 +1,82 @@
-angular-stripe [![Build Status](https://travis-ci.org/bendrucker/angular-stripe.svg?branch=master)](https://travis-ci.org/bendrucker/angular-stripe)
+angularjs-conekta [![Build Status](https://travis-ci.org/NutriconsultorOnline/angularjs-conekta.svg?branch=master)](https://travis-ci.org/NutriconsultorOnline/angularjs-conekta) [![dependencies Status](https://david-dm.org/NutriconsultorOnline/angularjs-conekta/status.svg)](https://david-dm.org/NutriconsultorOnline/angularjs-conekta) [![devDependencies Status](https://david-dm.org/NutriconsultorOnline/angularjs-conekta/dev-status.svg)](https://david-dm.org/NutriconsultorOnline/angularjs-conekta?type=dev)
 ==============
 
-Angular provider for easy interaction with [Stripe.js](https://stripe.com/docs/stripe.js). angular-stripe wraps Stripe.js's async operations in `$q` promises, making response handling easier and eliminating `$scope.$apply` calls and other repetitive boilerplate in your application. Check out [angular-credit-cards](https://github.com/bendrucker/angular-credit-cards) for validating your credit card forms.
+Angular provider for easy interaction with [Conekta.js](https://developers.conekta.com/libraries/javascript). angularjs-conekta wraps Conekta.js's async operations in `$q` promises, making response handling easier and eliminating `$scope.$apply` calls and other repetitive boilerplate in your application. Check out [angular-credit-cards](https://github.com/bendrucker/angular-credit-cards) for validating your credit card forms.
 
 ## Installing
 
 ```sh
-npm install --save angular-stripe
+npm install --save angularjs-conekta
 ```
 
 ## Usage
 
-angular-stripe will load Stripe.js when it's first called. You don't need to directly [include Stripe.js via a `<script>` tag](https://stripe.com/docs/stripe.js#including-stripejs).
+angularjs-conekta will load Conekta.js when it's first called. You don't need to directly [include Conekta.js via a `<script>` tag](https://developers.conekta.com/libraries/javascript).
 
 ```js
-// node module exports the string 'angular-stripe' for convenience
+// node module exports the string 'angularjs-conekta' for convenience
 angular.module('myApp', [
-  require('angular-stripe')
+  require('angularjs-conekta')
 ])
 
 // otherwise, include the code first then the module name
 angular.module('myApp', [
-  'angular-stripe'
+  'angularjs-conekta'
 ])
 ```
 
 ## API
 
-### `stripeProvider`
+### `conektaProvider`
 
-angular-stripe exposes `stripeProvider` for configuring Stripe.js.
+angularjs-conekta exposes `conektaProvider` for configuring Conekta.js.
 
-##### `stripeProvider.url`
+##### `conektaProvider.url`
 
-The URL that will be used to fetch the Stripe.js library.
+The URL that will be used to fetch the Conekta.js library.
 
-##### `stripeProvider.setPublishableKey(key)` -> `undefined`
+##### `conektaProvider.setPublicKey(key)` -> `undefined`
 
-Sets your Stripe [publishable key](https://stripe.com/docs/stripe.js#setting-publishable-key). 
+Sets your Conekta [public key](https://developers.conekta.com/libraries/javascript). 
 
 ```js
 angular
   .module('myApp', [
-    'angular-stripe'
+    'angularjs-conekta'
   ])
-  .config(function (stripeProvider) {
-    stripeProvider.setPublishableKey('my_key')
+  .config(function (conektaProvider) {
+    conektaProvider.setPublicKey('my_key')
   })
 ```
 
 <hr>
 
-### `stripe`
+### `conekta`
 
-Inject `stripe` into your services or controllers to access the API methods. `createToken` returns a `$q` promise. If Stripe responds with an error, the promise will be rejected. 
-
----
-
-##### `stripe.setPublishableKey(key)` -> `undefined`
-
-Same as [`stripeProvider.setPublishableKey`](#stripeprovidersetpublishablekeykey---undefined)
+Inject `conekta` into your services or controllers to access the API methods. `token.create` returns a `$q` promise. If Conekta responds with an error, the promise will be rejected. 
 
 ---
 
-### `stripe.card`
+##### `conekta.setPublicKey(key)` -> `undefined`
 
-##### `stripe.card.createToken(card [, params])` -> `promise`
+Same as [`conektaProvider.setPublicKey`](#conektaprovidersetpublickeykey---undefined)
+
+---
+
+### `conekta.token`
+
+##### `conekta.token.create(card)` -> `promise`
  
-Tokenizes a card using [`Stripe.card.createToken`](https://stripe.com/docs/stripe.js#card-createToken). You can optionally pass a `key` property under `params` to use a different publishable key than the default to create that token. This is especially useful for applications using [Stripe Connect](https://stripe.com/connect).
+Tokenizes a card using [`Conekta.token.create`](https://developers.conekta.com/tutorials/card).
 
-The following utility methods are also exposed:
+### `conekta.card`
 
-* [`validateCardNumber`](https://stripe.com/docs/stripe.js#card-validateCardNumber)
-* [`validateExpiry`](https://stripe.com/docs/stripe.js#card-validateExpiry)
-* [`validateCVC`](https://stripe.com/docs/stripe.js#card-validateCVC)
-* [`cardType`](https://stripe.com/docs/stripe.js#card-cardType)
+The following utility methods are exposed:
 
----
-
-#### `stripe.bankAccount`
- 
-##### `stripe.bankAccount.createToken(bankAccount [, params])` -> `promise`
-
-Tokenizes a card using [`Stripe.bankAccount.createToken`](https://stripe.com/docs/stripe.js#bank-account-createToken).
-
-The following utility methods are also exposed:
-
-* [`validateRoutingNumber`](https://stripe.com/docs/stripe.js#bank-account-validateRoutingNumber)
-* [`validateAccountNumber`](https://stripe.com/docs/stripe.js#bank-account-validateAccountNumber)
-
----
-
-#### `stripe.bitcoinReceiver`
-
-##### `stripe.bitcoinReceiver.createReceiver` -> `promise`
-
-Creates a bitcoin receiver using [`Stripe.bitcoinReceiver.createReceiver`](https://stripe.com/docs/stripe.js#bitcoinreceiver-createreceiver).
-
-##### `stripe.bitcoinReceiver.pollReceiver` -> `promise`
-
-Polls a bitcoin receiver using [`Stripe.bitcoinReceiver.pollReceiver`](https://stripe.com/docs/stripe.js#bitcoinreceiver-pollreceiver). Note that you'll need to implement [additional logic if you need to cancel receivers](https://github.com/bendrucker/stripe-as-promised#bitcoin).
-
-The following utility methods are also exposed:
-
-* [`cancelReceiverPoll`](https://stripe.com/docs/stripe.js#bitcoinreceiver-cancelreceiverpoll)
+* `validateNumber`
+* `validateExpirationDate`
+* `validateCVC`
+* `getBrand`
 
 ---
 
@@ -112,11 +85,11 @@ The following utility methods are also exposed:
 #### Charging a card
 
 ```js
-app.controller('PaymentController', function ($scope, $http, stripe) {
+app.controller('PaymentController', function ($scope, $http, conekta) {
   $scope.charge = function charge () {
-    return stripe.card.createToken($scope.payment.card)
+    return conekta.token.create($scope.payment.card)
       .then(function (response) {
-        console.log('token created for card ending in ', response.card.last4)
+        console.log('token created for a card')
         var payment = angular.copy($scope.payment)
         payment.card = undefined
         payment.token = response.id
@@ -126,12 +99,7 @@ app.controller('PaymentController', function ($scope, $http, stripe) {
         console.log('successfully submitted payment for $', payment.amount)
       })
       .catch(function (err) {
-        if (err.type && /^Stripe/.test(err.type)) {
-          console.log('Stripe error: ', err.message)
-        }
-        else {
-          console.log('Other error occurred, possibly with your API', err.message)
-        }
+        console.log('Payment error: ', err.message)
       })
   }
 })

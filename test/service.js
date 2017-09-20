@@ -6,16 +6,16 @@ var angular = require('angular')
 require('angular-mocks/ngMock')
 var sinon = require('sinon')
 var expect = require('chai').use(require('sinon-chai')).use(require('chai-as-promised')).expect
-var angularStripe = require('../')
+var angularConekta = require('../')
 
 var inject = angular.mock.inject
 
-describe('stripe: Service', function () {
-  window.mocha.options.globals = (window.mocha.options.globals || []).concat(['Stripe'])
+describe('conekta: Service', function () {
+  window.mocha.options.globals = (window.mocha.options.globals || []).concat(['Conekta'])
 
   this.timeout(500)
 
-  beforeEach(angular.mock.module(angularStripe))
+  beforeEach(angular.mock.module(angularConekta))
 
   var data, response, sandbox
   beforeEach(function () {
@@ -27,17 +27,17 @@ describe('stripe: Service', function () {
     sandbox.restore()
   })
 
-  it('exposes #setPublishableKey', inject(function (stripe) {
-    expect(typeof stripe.setPublishableKey).to.equal('function')
+  it('exposes #setPublicKey', inject(function (conekta) {
+    expect(typeof conekta.setPublicKey).to.equal('function')
   }))
 
   it('can lazily set the publishable key', function () {
     var p
-    inject(function (stripe) {
-      p = stripe.setPublishableKey('boop')
+    inject(function (conekta) {
+      p = conekta.setPublicKey('public_key_for_testing')
         .then(function () {
-          expect(typeof window.Stripe).to.equal('function')
-          expect(window.Stripe.key).to.equal('boop')
+          expect(typeof window.Conekta).to.equal('object')
+          expect(window.Conekta.getPublicKey()).to.equal('public_key_for_testing')
         })
     })
 
@@ -48,10 +48,10 @@ describe('stripe: Service', function () {
     describe('#createToken', function () {
       it('resolves on success', function () {
         var p
-        inject(function (stripe) {
-          sinon.stub(window.Stripe.card, 'createToken').yieldsAsync(200, response)
+        inject(function (conekta) {
+          sinon.stub(window.Conekta.token, 'create').yieldsAsync(response)
 
-          p = stripe.card.createToken(data).then(function (res) {
+          p = conekta.token.create(data).then(function (res) {
             expect(res).to.equal(response)
           })
         })
@@ -61,20 +61,25 @@ describe('stripe: Service', function () {
 
       it('rejects on error', function () {
         var p
-        inject(function (stripe) {
-          response.error = {
-            code: 'invalid_expiry_year',
-            message: 'Your card\'s expiration year is invalid.',
-            param: 'exp_year',
-            type: 'card_error'
+        inject(function (conekta) {
+          response = {
+            type: 'parameter_validation_error',
+            message: 'Something went wrong on Conekta\'s end',
+            message_to_purchaser: 'Your code could not be processed, please try again later',
+            error_code: 'invalid_expiry_month',
+            param: 'card[exp_month]'
           }
 
-          window.Stripe.card.createToken.restore()
-          sinon.stub(window.Stripe.card, 'createToken').yieldsAsync(400, response)
+          window.Conekta.token.create.restore()
+          sinon.stub(window.Conekta.token, 'create').callsArgWithAsync(2, response)
 
-          p = expect(stripe.card.createToken(data)).to.be.rejected
+          p = expect(conekta.token.create(data)).to.be.rejected
             .then(function (err) {
-              expect(err.message).to.contain(response.error.message)
+              expect(err.type).to.contain(response.type)
+              expect(err.message).to.contain(response.message)
+              expect(err.message_to_purchaser).to.contain(response.message_to_purchaser)
+              expect(err.error_code).to.contain(response.error_code)
+              expect(err.param).to.contain(response.param)
             })
         })
 

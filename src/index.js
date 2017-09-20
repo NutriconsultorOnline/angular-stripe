@@ -3,15 +3,15 @@
 var angular = require('angular')
 var provider = require('./provider')
 
-module.exports = angular.module('angular-stripe', [
+module.exports = angular.module('angularjs-conekta', [
   require('angular-q-promisify'),
   require('angular-assert-q-constructor')
 ])
-.provider('stripe', provider)
+.provider('conekta', provider)
 .run(verifyQ)
 .name
 
 verifyQ.$inject = ['assertQConstructor']
 function verifyQ (assertQConstructor) {
-  assertQConstructor('angular-stripe: For Angular <= 1.2 support, first load https://github.com/bendrucker/angular-q-constructor')
+  assertQConstructor('angularjs-conekta: For Angular <= 1.2 support, first load https://github.com/bendrucker/angular-q-constructor')
 }

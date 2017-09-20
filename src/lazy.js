@@ -3,12 +3,12 @@
 var Lazy = require('lazy-async')
 var dot = require('dot-prop')
 var loadScript = require('load-script-global')
-var stripeErrback = require('stripe-errback')
+var conektaErrback = require('conekta-errback')
 
-module.exports = LazyStripe
+module.exports = LazyConekta
 
-function LazyStripe (url, promisify) {
-  var methods = stripeErrback.methods.async.concat(stripeErrback.methods.sync)
+function LazyConekta (url, promisify) {
+  var methods = conektaErrback.methods.async.concat(conektaErrback.methods.sync)
   var lazy = Lazy(methods, load)
 
   return methods.reduce(function (acc, method) {
@@ -18,16 +18,20 @@ function LazyStripe (url, promisify) {
   }, {})
 
   function load (callback) {
-    loadScript({
-      url: url,
-      global: 'Stripe'
-    }, onLoad)
+    if (window.Conekta) {
+      onLoad(null, window.Conekta)
+    } else {
+      loadScript({
+        url: url,
+        global: 'Conekta'
+      }, onLoad)
+    }
 
-    function onLoad (err, Stripe) {
+    function onLoad (err, Conekta) {
       if (err) return callback(err)
-      var stripe = stripeErrback(Stripe)
-      stripe.setPublishableKey = Success(stripe.setPublishableKey, stripe)
-      callback(null, stripe)
+      var conekta = conektaErrback(Conekta)
+      conekta.setPublicKey = Success(conekta.setPublicKey, conekta)
+      callback(null, conekta)
     }
   }
 }

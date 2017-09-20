@@ -1,15 +1,15 @@
 'use strict'
 
-var LazyStripe = require('./lazy')
+var LazyConekta = require('./lazy')
 
-module.exports = stripeProvider
+module.exports = conektaProvider
 
-function stripeProvider () {
+function conektaProvider () {
   var key = null
-  var stripe = null
+  var conekta = null
 
-  this.url = 'https://js.stripe.com/v2/'
-  this.setPublishableKey = function setPublishableKey (_key) {
+  this.url = 'https://cdn.conekta.io/js/latest/conekta.min.js'
+  this.setPublicKey = function setPublicKey (_key) {
     key = _key
   }
 
@@ -17,9 +17,9 @@ function stripeProvider () {
   this.$get.$inject = ['promisify', '$exceptionHandler']
 
   function service (promisify, $exceptionHandler) {
-    if (stripe) return stripe
-    stripe = LazyStripe(this.url, promisify)
-    stripe.setPublishableKey(key)
-    return stripe
+    if (conekta) return conekta
+    conekta = LazyConekta(this.url, promisify)
+    conekta.setPublicKey(key)
+    return conekta
   }
 }
