@@ -93,10 +93,11 @@ app.controller('PaymentController', function ($scope, $http, conekta) {
         var payment = angular.copy($scope.payment)
         payment.card = undefined
         payment.token = response.id
-        return $http.post('https://yourserver.com/payments', payment)
-      })
-      .then(function (payment) {
-        console.log('successfully submitted payment for $', payment.amount)
+        // This request hopefully returns a promise
+        return $http.post('https://yourserver.com/payments', payment).then(function (payment) {
+          console.log('successfully submitted payment for $', payment.amount)
+          return payment;
+        });
       })
       .catch(function (err) {
         console.log('Payment error: ', err.message)
