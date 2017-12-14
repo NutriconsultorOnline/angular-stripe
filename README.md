@@ -86,17 +86,27 @@ The following utility methods are exposed:
 
 ```js
 app.controller('PaymentController', function ($scope, $http, conekta) {
+  // Example payment object
+  $scope.payment = {
+          card: {
+            number: "4242424242424242",
+            name: "Javier Pedreiro",
+            exp_year: "2018",
+            exp_month: "12",
+            cvc: "123"
+          }
+        };
   $scope.charge = function charge () {
-    return conekta.token.create($scope.payment.card)
+    return conekta.token.create($scope.payment)
       .then(function (response) {
         console.log('token created for a card')
         var payment = angular.copy($scope.payment)
         payment.card = undefined
         payment.token = response.id
-        return $http.post('https://yourserver.com/payments', payment)
-      })
-      .then(function (payment) {
-        console.log('successfully submitted payment for $', payment.amount)
+        return $http.post('https://yourserver.com/payments', payment).then(function (payment) {
+          console.log('successfully submitted payment for $', payment.amount)
+          return payment;
+        });
       })
       .catch(function (err) {
         console.log('Payment error: ', err.message)
